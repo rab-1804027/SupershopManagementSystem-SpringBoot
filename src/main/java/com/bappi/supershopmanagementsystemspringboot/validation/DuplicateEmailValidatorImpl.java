@@ -7,7 +7,9 @@ import com.bappi.supershopmanagementsystemspringboot.validation.annotations.Dupl
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class DuplicateEmailValidatorImpl implements ConstraintValidator<DuplicateEmailValidator, String> {
 
@@ -15,6 +17,7 @@ public class DuplicateEmailValidatorImpl implements ConstraintValidator<Duplicat
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
+        log.info("Validating email: {}", email);
         User user = userService.findByEmail(email);
         boolean isValid = (user == null);
 

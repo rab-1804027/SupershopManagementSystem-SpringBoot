@@ -1,7 +1,7 @@
 package com.bappi.supershopmanagementsystemspringboot.dto;
 
-import jakarta.validation.constraints.NegativeOrZero;
-import jakarta.validation.constraints.NotNull;
+import com.bappi.supershopmanagementsystemspringboot.validation.annotations.NotBlankOrEmptyValidator;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -9,14 +9,12 @@ import org.springframework.stereotype.Component;
 @Data
 public class ProductUpdateRequestDto {
 
-    @NotNull(message = "Product Name cannot be null")
-    String name;
+    @NotBlankOrEmptyValidator(message = "Product Name cannot be blank or empty")
+    private String name;
 
-    @NotNull(message = "Product Price cannot be null")
-    @NegativeOrZero(message = "Product Price cannot be negative or zero")
-    Double price;
+    @Positive(message = "Product Price should be a positive number")
+    private Double price;
 
-    @NotNull(message = "Product Stock Quantity cannot be null")
-    @NegativeOrZero(message = "Product Stock Quantity cannot be negative or zero")
-    Integer stockQuantity;
+    @PositiveOrZero(message = "Product Stock Quantity cannot be a negative number")
+    private Integer stockQuantity;
 }
