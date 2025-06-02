@@ -1,5 +1,5 @@
 package com.bappi.supershopmanagementsystemspringboot.utils;
 
-public class CommonUtils {
+public class Commons {
 
 }

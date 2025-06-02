@@ -23,7 +23,7 @@ public class ProductController {
     public ResponseEntity<?> save(@Valid @RequestBody ProductCreateRequestDto productCreateRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         productService.save(username, productCreateRequestDto);
-
+        log.info("Product saved successfully!");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -31,8 +31,8 @@ public class ProductController {
 
     @PutMapping("/product/{id}")
     public void update(@PathVariable("id") Integer id,@Valid @RequestBody ProductUpdateRequestDto productUpdateRequestDto){
-
         productService.update(id, productUpdateRequestDto);
+        log.info("Product updated successfully!");
     }
 
 }

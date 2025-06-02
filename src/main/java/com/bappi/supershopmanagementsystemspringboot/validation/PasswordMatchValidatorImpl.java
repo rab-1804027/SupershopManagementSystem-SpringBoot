@@ -1,7 +1,7 @@
 package com.bappi.supershopmanagementsystemspringboot.validation;
 
 import com.bappi.supershopmanagementsystemspringboot.dto.RegistrationRequestDto;
-import com.bappi.supershopmanagementsystemspringboot.utils.ConstantUtils;
+import com.bappi.supershopmanagementsystemspringboot.utils.Constants;
 import com.bappi.supershopmanagementsystemspringboot.validation.annotations.PasswordMatchValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -12,11 +12,11 @@ public class PasswordMatchValidatorImpl implements ConstraintValidator<PasswordM
 
     @Override
     public boolean isValid(RegistrationRequestDto userRegistrationDto, ConstraintValidatorContext context) {
-        boolean isValid = userRegistrationDto.getPassword().equals(userRegistrationDto.getConfirmPassword());
-
+        boolean isValid = userRegistrationDto.password().equals(userRegistrationDto.confirmPassword());
+        log.info("Validating password and confirm password is matching or not");
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ConstantUtils.ErrorMessage.PASSWORD_NOT_MATCH)
+            context.buildConstraintViolationWithTemplate(Constants.ErrorMessage.PASSWORD_NOT_MATCH)
                     .addPropertyNode("confirmPassword")
                     .addConstraintViolation();
         }

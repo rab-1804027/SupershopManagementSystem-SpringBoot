@@ -6,32 +6,30 @@ import com.bappi.supershopmanagementsystemspringboot.validation.annotations.Pass
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
-@Data
 @PasswordMatchValidator
-public class RegistrationRequestDto {
+public record RegistrationRequestDto (
 
     @NotNull(message = "Name cannot be null")
     @NotBlank(message = "Name cannot be blank")
-    String name;
+    String name,
 
     @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Email is not valid")
     @DuplicateEmailValidator
-    String email;
+    String email,
 
     @NotNull(message = "Username cannot be null")
     @NotBlank(message = "Username cannot be blank")
     @DuplicateUsernameValidator
-    String username;
+    String username,
 
     @NotNull(message = "Password cannot be null")
     @NotBlank(message = "Password cannot be blank")
-    String password;
+    String password,
 
     @NotNull(message = "Confirm Password cannot be null")
     @NotBlank(message = "Confirm Password cannot be blank")
-    String confirmPassword;
-}
+    String confirmPassword
+){}

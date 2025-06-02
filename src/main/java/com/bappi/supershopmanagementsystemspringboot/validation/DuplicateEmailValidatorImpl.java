@@ -2,7 +2,7 @@ package com.bappi.supershopmanagementsystemspringboot.validation;
 
 import com.bappi.supershopmanagementsystemspringboot.entity.User;
 import com.bappi.supershopmanagementsystemspringboot.service.UserService;
-import com.bappi.supershopmanagementsystemspringboot.utils.ConstantUtils;
+import com.bappi.supershopmanagementsystemspringboot.utils.Constants;
 import com.bappi.supershopmanagementsystemspringboot.validation.annotations.DuplicateEmailValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -23,7 +23,7 @@ public class DuplicateEmailValidatorImpl implements ConstraintValidator<Duplicat
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ConstantUtils.ErrorMessage.DUPLICATE_EMAIL)
+            context.buildConstraintViolationWithTemplate(Constants.ErrorMessage.DUPLICATE_EMAIL)
                     .addPropertyNode("email")
                     .addConstraintViolation();
         }
