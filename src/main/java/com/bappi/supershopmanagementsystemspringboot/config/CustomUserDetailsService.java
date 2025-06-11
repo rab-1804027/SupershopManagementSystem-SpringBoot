@@ -1,15 +1,12 @@
 package com.bappi.supershopmanagementsystemspringboot.config;
 
 import com.bappi.supershopmanagementsystemspringboot.entity.User;
-import com.bappi.supershopmanagementsystemspringboot.exception.UserNotFoundException;
 import com.bappi.supershopmanagementsystemspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Slf4j
