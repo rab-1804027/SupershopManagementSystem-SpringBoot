@@ -24,12 +24,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
-
         if(!passwordEncoder.matches(password, customUserDetails.getPassword())){
             throw new BadCredentialsException("Invalid username or password");
         }
-
-        return new UsernamePasswordAuthenticationToken(customUserDetails, password, customUserDetails.getAuthorities());
+        log.info("CustomAuthenticationProvider authenticated user::{} ", customUserDetails.getUsername());
+        return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }
 
     @Override

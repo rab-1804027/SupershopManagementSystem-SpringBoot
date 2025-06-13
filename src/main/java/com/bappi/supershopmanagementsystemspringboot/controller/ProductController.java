@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +23,11 @@ public class ProductController {
 
     @PostMapping("/product")
     public ResponseEntity<?> save(@Valid @RequestBody ProductCreateRequestDto productCreateRequestDto){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+
         productService.save(username, productCreateRequestDto);
         log.info("Product saved successfully!");
         return ResponseEntity

@@ -5,6 +5,7 @@ import com.bappi.supershopmanagementsystemspringboot.dto.ProductUpdateRequestDto
 import com.bappi.supershopmanagementsystemspringboot.entity.Product;
 import com.bappi.supershopmanagementsystemspringboot.entity.User;
 //import com.bappi.supershopmanagementsystemspringboot.mapper.ProductMapper;
+import com.bappi.supershopmanagementsystemspringboot.mapper.ProductMapper;
 import com.bappi.supershopmanagementsystemspringboot.mapper.UserMapper;
 import com.bappi.supershopmanagementsystemspringboot.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -21,14 +22,15 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final ProductMapper productMapper;
 
     public void save(String username, ProductCreateRequestDto productCreateRequestDto){
 
-        Product product = modelMapper.map(productCreateRequestDto, Product.class);
-        //Product product = ProductMapper.INSTANCE.dtoToEntity(productCreateRequestDto);
+        //Product product = modelMapper.map(productCreateRequestDto, Product.class);
         User user = userService.findByUsername(username);
-        product.setUser(user);
+//        product.setUser(user);
 
+        Product product = productMapper.dtoToEntity(productCreateRequestDto, user);
         productRepository.save(product);
     }
 

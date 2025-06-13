@@ -1,31 +1,67 @@
 package com.bappi.supershopmanagementsystemspringboot.service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
 @Slf4j
 public class JwtService {
 
-    @Value("${jwt.secretkey}")
-    private String secretKey;
+    private final SecretKey secretKey;
+
+    public JwtService(@Value("${jwt.secretKey}") String key) {
+        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
+    }
 
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(UserDetails userDetails) {
-        log.info("Secret Key: " + secretKey);
+    public String generateToken(String username) {
+
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .setSubject(username)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .compact();
     }
+
+    public String getUsernameFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            String username = claims.getSubject();
+            Date expiration = claims.getExpiration();
+
+            return username.equals(userDetails.getUsername()) && expiration.after(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
 }
