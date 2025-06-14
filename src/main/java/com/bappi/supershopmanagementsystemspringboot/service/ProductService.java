@@ -11,6 +11,9 @@ import com.bappi.supershopmanagementsystemspringboot.repository.ProductRepositor
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,7 +27,11 @@ public class ProductService {
     private final ModelMapper modelMapper;
     private final ProductMapper productMapper;
 
-    public void save(String username, ProductCreateRequestDto productCreateRequestDto){
+    public void save(ProductCreateRequestDto productCreateRequestDto){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
 
         //Product product = modelMapper.map(productCreateRequestDto, Product.class);
         User user = userService.findByUsername(username);

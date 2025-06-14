@@ -1,6 +1,7 @@
 package com.bappi.supershopmanagementsystemspringboot.controller;
 
 import com.bappi.supershopmanagementsystemspringboot.config.CustomAuthenticationManager;
+import com.bappi.supershopmanagementsystemspringboot.config.CustomUserDetails;
 import com.bappi.supershopmanagementsystemspringboot.config.CustomUserDetailsService;
 import com.bappi.supershopmanagementsystemspringboot.dto.LoginRequestDto;
 import com.bappi.supershopmanagementsystemspringboot.dto.LoginResponseDto;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AuthController {
 
+    
     private final CustomAuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
@@ -41,7 +43,8 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password())
         );
 
-        String token = jwtService.generateToken(loginRequestDto.username());
+        CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(loginRequestDto.username());
+        String token = jwtService.generateToken(customUserDetails);
 
         return ResponseEntity
                 .ok()

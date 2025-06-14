@@ -23,12 +23,7 @@ public class ProductController {
 
     @PostMapping("/product")
     public ResponseEntity<?> save(@Valid @RequestBody ProductCreateRequestDto productCreateRequestDto){
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-
-        productService.save(username, productCreateRequestDto);
+        productService.save(productCreateRequestDto);
         log.info("Product saved successfully!");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
